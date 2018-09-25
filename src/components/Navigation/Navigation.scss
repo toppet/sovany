@@ -1,0 +1,221 @@
+@import '../../variables.scss';
+
+.navigation-wrap {
+	padding: 45px 15px 0;
+
+	@media screen and (min-width: 1280px) {
+		display: flex;
+		flex: 1;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0 5%;
+		max-height: 115px;
+		margin-top: 0;
+	}
+
+	.sovany-vigasz-logo {
+		width: 165px;
+		margin-bottom: 5px;
+
+		@media screen and (min-width: 1280px) {
+			width: 238px;
+		}
+	}
+}
+
+
+
+
+.mobile-menu {
+	display: flex;
+	flex-direction: column;
+
+	@media screen and (min-width: 1280px) {
+		display: none;
+	}
+
+	.nav-wrap {
+		display: none;
+
+		&.open {
+			display: block;
+			width: 100%;
+			background: white;
+			left: 0;
+			top: 93px;
+			position: absolute;
+			height: calc(100vh - 93px);
+			z-index: 1;
+		}
+	}
+
+	.nav-btn {
+		position: absolute;
+		height: 35px;
+    width: 35px;
+    display: flex;
+    right: 15px;
+    flex-direction: column;
+    align-items: center;
+		justify-content: space-evenly;
+		cursor: pointer;
+		z-index: 100;
+		padding: 5px;
+		position: absolute;
+
+	}
+	.nav-btn.open {
+		span:first-child {
+			transform: rotate(45deg);
+			position: absolute;
+			width: 25px;
+		}
+
+		span:nth-child(even) {
+			opacity: 0;
+		}
+
+		span:last-child {
+			transform: rotate(-45deg);
+			position: absolute;
+			width: 25px;
+		}
+	}
+	.nav-btn span {
+		display: block;
+		width: 100%;
+		height: 3px;
+		background: $color-pink;
+		transition: all .25s ease-in-out;
+	}
+
+	nav {
+		display: flex;
+		flex-direction: column;
+		margin: 15px 0;
+	}
+
+	nav a {
+		font-family: 'Roboto', sans-serif;
+		font-size: 16px;
+		font-weight: 500;
+		color: rgba(40, 56, 69, 0.7);
+		// margin: 15px;
+		position: relative;
+		text-align: center;
+		padding: 15px;
+
+		&.selected {
+			color: $color-blue;
+			font-weight: bold;
+		}
+	}
+}
+
+.desktop-menu {
+	display: none;
+
+	@media screen and (min-width: 1280px) {
+		display: flex;
+		flex-basis: 100%;
+    align-items: center;
+    justify-content: space-between;
+	}
+
+	nav a {
+		font-family: 'Roboto', sans-serif;
+		font-size: 16px;
+		font-weight: 500;
+		color: rgba(40, 56, 69, 0.7);
+		margin: 0 15px;
+		position: relative;
+
+		&.selected {
+			color: $color-blue;
+			font-weight: bold;
+		}
+
+		&:after {
+			content: "";
+			width: 0;
+			height: 2px;
+			background: $color-mildpink;
+			position: absolute;
+			display: block;
+			bottom: -5px;
+			left: 0;
+			transition: width 250ms ease-in-out;
+		}
+	}
+
+	nav a:hover:after {
+	/*	content: "";
+		display: block;
+		position: absolute;
+		height: 2px;
+		background: red;*/
+		width: 100%;
+	}
+}
+
+.nav-wrap {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	flex: 1;
+}
+
+.nav-wrap .additional {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	@media screen and (min-width: 1280px) {
+		flex-direction: row;
+	}
+
+	.social {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.social a {
+		margin: 10px;
+		color: $color-pink;
+		font-size: 25px;
+		padding: 10px;
+	}
+
+	.phone {
+		font-family: 'Roboto', sans-serif;
+		font-size: 16px;
+		font-weight: 500;
+		color: $color-blue;
+
+		@media screen and (min-width: 1280px) {
+			display: none;
+		}
+	}
+}
+
+.nav-wrap .order-cake-btn {
+	border-radius: 25px;
+	background: $color-pink;
+	border: 1px solid transparent;
+	padding: 15px;
+	color: white;
+	font-family: 'Roboto', sans-serif;
+	font-size: 12px;
+	font-weight: 500;
+	text-transform: uppercase;
+	display: inline-block;
+	outline: none;
+	letter-spacing: 3px;
+	cursor: pointer;
+
+	@media screen and (min-width: 1280px) {
+		margin-bottom: 0;
+	}
+}
+

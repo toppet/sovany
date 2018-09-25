@@ -1,0 +1,520 @@
+@import '../../variables.scss';
+
+.order-cake {
+	.content {
+		/*padding: 0 15px;*/
+
+		@media screen and (min-width: 1280px) {
+			padding: 0 10%;
+		}
+	}
+	.content-header {
+		display: flex;
+		justify-content: space-between;
+		flex-direction: column;
+		align-items: flex-start;
+		padding: 0 15px;
+		color: $color-blue;
+
+		@media screen and (min-width: 1280px) {
+			align-items: center;
+			flex-direction: row;
+		}
+
+		h2 {
+			font-size: 45px;
+			font-family: 'Playfair Display', serif;
+			margin: 0;
+			padding: 0;
+			color: $color-blue;
+
+			@media screen and (min-width: 1280px) {
+				position: relative;
+				text-align: left;
+				font-size: 52px;
+				font-weight: bold;
+				margin: 0;
+				position: relative;
+			}
+
+			&:after {
+				display: none;
+
+				@media screen and (min-width: 1280px) {
+					content: "";
+					display: block;
+					position: absolute;
+					height: 2px;
+					width: 380px;
+					background: $color-pink;
+					left: 25%;
+					top: 50%;
+				}
+			}
+		}
+
+		.ghost-text {
+			display: none;
+
+			@media screen and (min-width: 1280px) {
+				display: block;
+				position: absolute;
+				font-size: 105px;
+				font-weight: bold;
+				color: rgba(242, 212, 203, 0.2);
+				top: -60px;
+				left: -85px;
+				z-index: -1;
+			}
+		}
+
+		img {
+			display: none;
+
+			@media screen and (min-width: 1280px) {
+				width: 280px;
+			}
+		}
+
+	}
+
+	.location-selector {
+		display: flex;
+		align-items: center;
+
+		.locations-wrap {
+			font-size: 14px;
+			font-weight: 500;
+			text-align: center;
+			color: #b3b3b3;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			width: 100%;
+		}
+
+		.locations-wrap span {
+			padding: 25px 15px;
+			cursor: pointer;
+			//border: 2px solid red;
+		}
+
+		.locations-wrap span.selected {
+			color: $color-blue;
+			border-bottom: 3px solid $color-pink;
+		}
+	}
+
+
+}
+
+/* ------ FORM ------- */
+
+.order-cake .form-wrap {
+
+  border-top: solid 1px #f2d4cb;
+	padding: 15px;
+
+	.cake {
+		margin-bottom: 25px;
+	}
+
+
+	.formControl {
+		width: 100%;
+		margin-bottom: 15px;
+
+		label {
+			display: flex;
+			flex-direction: column;
+			font-size: 12px;
+			font-weight: 500;
+			color: #666666;
+			margin-bottom: 15px;
+			// margin-bottom: 15px;
+		}
+
+		.extra-info {
+			font-size: 10px;
+			font-weight: 500;
+			color: #f0576b;
+			margin-top: 15px;
+		}
+
+		input,
+		select,
+		.dateInput,
+		.cake-select,
+		.slice-select,
+		.custom-request-select {
+			padding: 15px;
+			border: 2px solid #f5f5f5;
+			border-radius: 4px;
+			font-size: 12px;
+			font-weight: bold;
+			color: $color-blue;
+		}
+	}
+
+	.formControl .dateInput {
+		padding: 0;
+		padding-left: 15px;
+
+		> div div {
+			font-size: 12px;
+		}
+
+		input {
+			margin-top: 0;
+			font-size: 12px !important;
+			font-weight: bold !important;
+			color: #808080 !important;
+			border: 2px solid #f5f5f5;
+			border-radius: 4px;
+		}
+
+		hr {
+			display: none;
+		}
+	}
+
+	.formControl .cake-select,
+	.formControl .slice-select,
+	.formControl .custom-request-select {
+		margin-top: 0;
+		padding: 10px;
+		font-size: 12px !important;
+		font-weight: bold !important;
+		color: $color-blue !important;
+		width: 100%;
+	}
+
+	.col-divided {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+
+		.formControl {
+			width: 48.5%;
+		}
+	}
+
+	.formControl.additional {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-start;
+
+		button {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin-right: 30px;
+			margin-top: 30px;
+			width: 30px;
+			height: 30px;
+			border: 2px solid #f5f5f5;
+			border-radius: 50%;
+			color: $color-pink;
+			background: white;
+			position: relative;
+		}
+
+		button:before,
+		button:after {
+			content: "";
+			display: block;
+			position: absolute;
+			width: 10px;
+			height: 1px;
+			background: $color-pink;
+		}
+		button:before {
+			transform: rotate(-45deg);
+		}
+		button:after {
+			transform: rotate(45deg);
+		}
+
+		.label-wrap {
+			flex: 1;
+		}
+	}
+
+	.add-cake-button-wrap {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		button {
+			border: none;
+			border: 1px solid $color-pink;
+			border-radius: 30px;
+			padding: 17px 25px;
+			text-transform: uppercase;
+			color: $color-pink;
+			font-size: 12px;
+			font-weight: bold;
+			background: white;
+			letter-spacing: 1.5px;
+
+			&:active {
+				background: $color-pink;
+				color: white;
+			}
+		}
+	}
+
+	/*.label-wrap {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-start;
+
+		.remove-cake-btn {
+			margin-right: 30px;
+		}
+	}*/
+
+
+	.custom-price-wrap {
+		display: flex;
+		flex-direction: row;
+		align-items: flex-start;
+		justify-content: flex-end;
+		flex-wrap: wrap;
+
+		.custom-request-comment textarea {
+			padding: 15px 20px;
+			border-radius: 4px;
+			background-color: #ffffff;
+			border: solid 2px #f5f5f5;
+			height: 85px;
+			font-family: 'Roboto', sans-serif;
+			font-size: 12px;
+			font-weight: bold;
+			color: $color-blue;
+			resize: none;
+
+			&::placeholder {
+				font-family: 'Roboto', sans-serif;
+				font-size: 12px;
+				font-weight: bold;
+				color: $color-blue;
+			}
+		}
+
+		.price-wrap {
+			width: 158px;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.price-wrap .price-text {
+			display: flex;
+			flex-direction: row;
+			width: 100%;
+			align-items: center;
+			justify-content: space-between;
+		}
+
+		.price-wrap .price-text h3 {
+			font-size: 12px;
+			font-weight: 500;
+			color: #666666;
+		}
+
+		.price-wrap .price-text span {
+			color: $color-blue;
+			font-size: 18px;
+  		font-weight: bold;
+		}
+	}
+
+	.summary {
+		margin-top: 45px;
+
+		.summary-label {
+			font-size: 12px;
+			font-weight: 500;
+			color: #666666;
+			margin-bottom: 20px;
+		}
+
+		/* DELIVERY SELECT */
+
+		.delivery-select {
+			border-radius: 4px;
+			background-color: #ffffff;
+			border: solid 2px #f9b5b3;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 25px 20px;
+			margin-bottom: 25px;
+		}
+
+		.delivery-select .delivery-mode {
+			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
+			justify-content: flex-start;
+
+
+			h3,
+			h4 {
+				font-size: 14px;
+				font-weight: bold;
+				color: $color-blue;
+				padding: 0;
+				margin: 0;
+			}
+
+			h3 {
+				margin-bottom: 10px;
+			}
+
+			h4 {
+				font-size: 12px;
+			}
+		}
+
+		.delivery-select .delivery-price {
+			font-size: 20px;
+			font-weight: 500;
+			color: $color-pink;
+		}
+
+		/* CAKE BOX */
+
+		.cake-box {
+			margin-bottom: 35px;
+
+			.summary-label {
+				text-align: center;
+			}
+		}
+
+		.cake-box .cake-box-price-wrap {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.cake-box .cake-box-price-wrap .shop-address {
+			flex: 1;
+
+			h3 {
+				font-size: 12px;
+				font-weight: bold;
+				color: #283845;
+				margin-bottom: 20px;
+			}
+
+			p {
+				font-size: 12px;
+				font-weight: 500;
+				color: #666666;
+			}
+		}
+
+		.cake-box .cake-box-price-wrap .cake-icon-wrap {
+
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex: 1;
+
+			.cake-icon {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 60px;
+				height: 60px;
+				border: 2px solid #f5f5f5;
+				border-radius: 50%;
+			}
+		}
+
+		.cake-box .cake-box-price-wrap .cake-box-price {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+			align-items: flex-end;
+			justify-content: flex-end;
+
+			h3 {
+				font-size: 10px;
+				font-weight: 900;
+				letter-spacing: 0.8px;
+				color: #cccccc;
+				margin-bottom: 10px;
+			}
+
+			p {
+				font-size: 14px;
+				font-weight: 500;
+				color: $color-blue;
+			}
+		}
+
+		/* FINAL PRICE WRAP */
+
+		.final-price-wrap {
+			border-bottom: 1px solid $color-pink;
+			padding-bottom: 35px;
+
+			p {
+				text-align: right;
+			}
+
+			span {
+				display: block;
+				text-align: right;
+				font-size: 24px;
+				font-weight: 900;
+				color: $color-blue;
+			}
+		}
+	}
+
+	/* -- BUTTONS -- */
+
+	.buttons {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		margin-top: 35px;
+		margin-top: 35px;
+
+		a,
+		button {
+			font-size: 12px;
+			font-weight: 900;
+			letter-spacing: 1.5px;
+			text-align: center;
+			color: #ffffff;
+			padding: 15px 25px;
+			border: none;
+			font-family: 'Roboto', sans-serif;
+			border-radius: 25px;
+			box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.15);
+			margin-bottom: 15px;
+		}
+
+		a {
+			background: #f2d4cb;
+		}
+
+		button {
+			background: #f9b5b3;
+
+		}
+	}
+
+
+
+}
