@@ -3,8 +3,10 @@ import Navigation from '../../components/Navigation';
 import Footer from '../../components/Footer';
 import moment from 'moment';
 import DatePicker from 'material-ui/DatePicker';
-import { Select, MenuItem, FormControl, TextField } from '@material-ui/core';
+import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
+import { Select, MenuItem, FormControl } from '@material-ui/core';
 import _ from 'lodash';
+
 
 import { Form, Field } from 'react-final-form';
 
@@ -15,9 +17,12 @@ import group6 from '../../images/group-6.png';
 import './OrderCake.scss';
 import { NavLink } from 'react-router-dom';
 
+import cakeDataJSON from '../../cakeData';
+
 const IntlPolyfill = require('intl');
 const DateTimeFormat = IntlPolyfill.DateTimeFormat;
 require('intl/locale-data/jsonp/hu');
+
 
 const dateFormat = 'YYYY.MM.DD.';
 
@@ -29,9 +34,11 @@ const addresses = {
 };
 
 const defaultCakeValues = {
-	cakeType: "",
+	cakeType: null,
+	cakeId: null,
 	sliceCount: 0,
 	decoration: '-',
+	requestPriceAdded: false,
 	comment: '',
 	price: 0,
 };
@@ -42,19 +49,18 @@ class OrderCake extends Component {
 		selectedShopName: 'budapest',
 		selectedShopIndex: 0,
 		formData: {
-			date: moment().format(dateFormat),
+			date: null,
 			name: '',
 			phone: '',
 			location: addresses['budapest'],
 			finalPrice: 0,
 			cakes: [defaultCakeValues]
 		},
-		/*finalPrices: {
-			budapest: 0,
-			pilisvorosvar: 0,
-			gyor: 0,
-			budaors: 0,
-		}*/
+		touched: {
+			date: false,
+			name: false,
+			phone: false,
+		},
 	}
 
 	selectShop(index, shopLocation) {
@@ -77,12 +83,6 @@ class OrderCake extends Component {
 
 	removeCake(index) {
 		const newFormData = this.state.formData;
-		/*const newFormData = formData.cakes.slice(index,1);
-		formData.cakes = newFormData;*/
-		// const newCakes = this.state.formData.cakes;
-		//console.log('index', index);
-		//console.log('formData.cakes', formData.cakes[index], index);
-		//console.log('newCakes',);
 		const lastIndex = (this.state.formData.cakes.length - 1);
 
 		if(index === lastIndex) {
@@ -102,7 +102,7 @@ class OrderCake extends Component {
 	}
 
 	handleDateChange(date) {
-		const newFormData = {...this.state.formData, date};
+		const newFormData = {...this.state.formData, date: moment(date).format(dateFormat)};
 		this.setState({ formData: newFormData });
 	}
 
@@ -111,12 +111,12 @@ class OrderCake extends Component {
 		const cakesData = this.state.formData.cakes;
 
 		const newCakes = cakesData.map((cake, cakeIndex) => {
-			//const ne = { ...cake };
 			let ne = { ...cake }
 
 			if(index === cakeIndex) {
 				ne = { ...defaultCakeValues };
-				ne.cakeType = e.target.value || "";
+				ne.cakeType = e.target.value || null;
+				ne.cakeId = _.findIndex(cakeDataJSON, (cake) => cake.id === e.target.value);
 			}
 
 			return ne;
@@ -130,12 +130,27 @@ class OrderCake extends Component {
 	handleSliceChange(e, index) {
 		const formData = this.state.formData;
 		const cakesData = this.state.formData.cakes;
+		// const cakeId = formData.cakes[index].cakeId;
+		// const slicePrice = cakeDataJSON[cakeId].price;
 
 		const newCakes = cakesData.map((cake, cakeIndex) => {
 			const ne = { ...cake };
 
 			if(index === cakeIndex) {
 				ne.sliceCount = e.target.value || 0;
+
+				if(e.target.value === 12) {
+					ne.price = 11400;
+				}
+
+				if(e.target.value === 16) {
+					ne.price = 15200;
+				}
+
+				if(e.target.value === 20) {
+					ne.price = 19000;
+				}
+
 			}
 
 			return ne;
@@ -146,14 +161,24 @@ class OrderCake extends Component {
 		this.setState({ formData });
 	}
 
-	handleRequestChange(e, index) {
+	handleCustomRequestChange(e, index) {
 		const formData = this.state.formData;
 		const cakesData = this.state.formData.cakes;
+		const customRequestPrice = 1500;
 
 		const newCakes = cakesData.map((cake, cakeIndex) => {
 			const ne = { ...cake };
 
 			if(index === cakeIndex) {
+
+				if (e.target.value !== "-" && ne.requestPriceAdded === false) {
+					ne.price += customRequestPrice;
+					ne.requestPriceAdded = true;
+				} else if(e.target.value === '-' && ne.requestPriceAdded === true) {
+					ne.price -= customRequestPrice;
+					ne.requestPriceAdded = false;
+				}
+
 				ne.decoration = e.target.value;
 			}
 
@@ -166,29 +191,52 @@ class OrderCake extends Component {
 	}
 
 	onSubmit = values => {
-		const newFormData = {...this.state.formData, ...values};
+		const finalPrice = this.getFinalPrice();
+		const newFormData = { ...this.state.formData, ...values, finalPrice };
 		console.log('newFormData', newFormData);
 	}
 
 	validate = values => {
-		const errors = {}
-		if (!values.firstName) {
-			errors.firstName = 'Required';
+		const errors = {};
+		const requiredText = "A mező kitöltése kötelező!";
+		const numReg = /^\d+$/;
+		const invalidTextFormat = "Hibas formatum";
+		const emailReg = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+		const formData = this.state.formData;
+
+		/* date */
+		if (!formData.date) {
+			errors.date = requiredText;
 		}
-		if (!values.lastName) {
-			errors.lastName = 'Required';
+
+		/* name */
+		if (!values.name) {
+			errors.name = requiredText;
 		}
+
+		/* phone number */
+		if (values.phone && !numReg.test(values.phone)) {
+			errors.phone = invalidTextFormat;
+		}
+		if (!values.phone) {
+			errors.phone = requiredText;
+		}
+
+		/* email */
 		if (!values.email) {
-			errors.email = 'Required';
+			errors.email = requiredText;
+		}
+		if (values.email && !emailReg.test(values.email)) {
+			errors.email = invalidTextFormat;
+		}
+
+		if(!formData.cakes[0].sliceCount) {
+			errors.sliceCount = requiredText;
 		}
 		return errors;
 	}
 
-	required = value => (value ? undefined : 'Required');
-
 	renderRemoveBtn = index => <button type='button' className='remove-cake-btn' onClick={ () => this.removeCake(index)}/>;
-
-
 
 	customRequestTextArea = () => (
 		<FormControl className='formControl custom-request-comment'>
@@ -199,64 +247,107 @@ class OrderCake extends Component {
 		</FormControl>
 	);
 
+	getFinalPrice() {
+		const formData = this.state.formData;
+		const boxPrice = 500;
+		let finalPrice = 0;
+
+		if (formData.cakes.length === 1 && !formData.cakes[0].sliceCount) {
+			return finalPrice;
+		}
+
+		formData.cakes.forEach(cake => {
+			finalPrice += (cake.price + boxPrice);
+		});
+
+		return finalPrice;
+	}
+
+	getCakeImage(index, cakeId) {
+		if(cakeId === null || cakeId === -1) {
+			return null;
+		}
+
+		const selectedCake = this.state.formData.cakes[index];
+		const cakeImgSrc = cakeDataJSON[cakeId].image;
+
+		return (
+			<div className="cake-image-wrap">
+				<img src={cakeImgSrc} alt={selectedCake.cakeType} className="cake-image"/>
+			</div>
+		);
+	}
+
+
 	render() {
 		const { formData, selectedShopIndex } = this.state;
 
+		const CustomIconComponent = (
+			<KeyboardArrowDown className='customSelectIcon' />
+		);
+
 		const cakesForm = formData.cakes.map((item, index) => (
 			<div key={index} className='cake'>
-				<h1>Cake-{index}</h1>
+
 				<FormControl className={`formControl ${index > 0 ? 'additional' : ''}`}>
 					{index > 0 ? this.renderRemoveBtn(index) : null}
 
 					<div className="label-wrap">
 						<label htmlFor="cakeType">Melyik tortát szeretné rendelni?</label>
 						<Select
-							value={formData.cakes[index].cakeType}
+							value={formData.cakes[index].cakeType || ""}
 							onChange={(e) => this.handleCakeTypeChange(e, index)}
 							inputProps={{
 								name: 'cakeType',
 								id: 'cake-type',
 							}}
+							IconComponent={() => CustomIconComponent}
 							className='cake-select'
 							disableUnderline={true}
 						>
-							<MenuItem value=""></MenuItem>
-							<MenuItem value="Sós-karamellás sajttorta">Sós-karamellás sajttorta</MenuItem>
-							<MenuItem value="OREO-s kinder">OREO-s kinder</MenuItem>
-							<MenuItem value="Epres sajttorta">Epres sajttorta</MenuItem>
+							{	cakeDataJSON.map(cake => <MenuItem key={cake.id} value={cake.id}>{cake.name}</MenuItem>) }
 						</Select>
 					</div>
 				</FormControl>
 
-				<div className="col-divided">
+				<div className="col-divided" style={{display: formData.cakes[index].cakeType ? 'flex' : 'none'}}>
 					<FormControl className='formControl'>
 						<label htmlFor="sliceCount">Szeletek száma</label>
-						<Select
-							value={formData.cakes[index].sliceCount}
-							onChange={(e) => this.handleSliceChange(e, index)}
-							inputProps={{
-								name: 'sliceCount',
-								id: 'slice-count',
-							}}
-							disableUnderline={true}
-							className='slice-select'
-						>
-							<MenuItem value=""></MenuItem>
-							<MenuItem value={8}>8</MenuItem>
-							<MenuItem value={12}>12</MenuItem>
-							<MenuItem value={16}>16</MenuItem>
-						</Select>
+
+						<Field name="sliceCount">
+							{({ input, meta }) => (
+								<div>
+									<Select
+										value={formData.cakes[index].sliceCount}
+										onChange={(e) => this.handleSliceChange(e, index)}
+										inputProps={{
+											name: 'sliceCount',
+											id: 'slice-count',
+										}}
+										IconComponent={() => CustomIconComponent}
+										disableUnderline={true}
+										className={`slice-select ${meta.touched && meta.error ? 'err-required' : ''}`}
+									>
+										<MenuItem value={12}>12</MenuItem>
+										<MenuItem value={16}>16</MenuItem>
+										<MenuItem value={20}>20</MenuItem>
+									</Select>
+									<Error name="sliceCount" />
+								</div>
+							)}
+						</Field>
 					</FormControl>
 
 					<FormControl className='formControl'>
 						<label htmlFor="customRequest">Különleges díszítés</label>
 						<Select
 							value={formData.cakes[index].decoration}
-							onChange={(e) => this.handleRequestChange(e, index)}
+							onChange={(e) => this.handleCustomRequestChange(e, index)}
 							inputProps={{
 								name: 'customRequest',
 								id: 'custom-request',
 							}}
+							IconComponent={() => CustomIconComponent}
 							disableUnderline={true}
 							className='custom-request-select'
 						>
@@ -277,119 +368,26 @@ class OrderCake extends Component {
 								<h3>Összesen:</h3>
 								<span>{formData.cakes[index].price},-Ft</span>
 							</div>
-							<img src="" alt={formData.cakes[index].cakeType} className="cake-image"/>
+
+							{this.getCakeImage(index, formData.cakes[index].cakeId)}
+
 					</div>
 				</div>
-				{/*
-					<DatePicker
-						className="dateInput"
-						hintText="Válasszon dátumot"
-						formatDate={(date) => moment(date).format(dateFormat)}
-						DateTimeFormat={DateTimeFormat}
-						locale="hu"
-						okLabel="OK"
-						cancelLabel="Mégsem"
-						minDate={new Date(moment().add(3, 'days'))}
-						shouldDisableDate={(date) => this.disableWeekends(date)}
-						onChange={(semmi, date) => this.handleDateChange(date, currentTab, index)}
-					/>
-					<span className='extra-info'>Kérjük vegye figyelembe, hogy a torta elkészítése kb. 3 napot<br/> vesz igénybe.</span>
-				<label htmlFor="name">
-					Neve
-					<Field type="text" name='name' className='input-name' component={<input type="text" />}/>
-				</label>
-
-				<label htmlFor="phone">
-					Telefonszám
-					<Field type="text" name='phone' className='input-phone' component={<input type="text" />}/>
-		</label>*/}
-
-			{/*	<FormControl>
-					<label htmlFor='cutomerName'>Neve</label>
-					<Field
-						name="firstName"
-						component={TextFieldAdapter}
-						validate={this.required}
-					/>
-				</FormControl>
-
-				<FormControl>
-					<label htmlFor='phone'>Telefonszám</label>
-					<Field
-						name="phone"
-						component="input"
-						type="text"
-						placeholder=""
-					/>
-				</FormControl>
-
-				<FormControl>
-					<label htmlFor='phone'>Datum</label>
-
-				<Field
-						name="date"
-						component={ () => (
-							<DatePicker
-								name="date"
-								className="dateInput"
-								hintText="Válasszon dátumot"
-								formatDate={(date) => moment(date).format(dateFormat)}
-								DateTimeFormat={DateTimeFormat}
-								locale="hu"
-								okLabel="OK"
-								cancelLabel="Mégsem"
-								minDate={new Date(moment().add(3, 'days'))}
-								shouldDisableDate={(date) => this.disableWeekends(date)}
-								onChange={(semmi, date) => this.handleDateChange(date, currentTab, index)}
-							/>
-						)}
-					/>
-				</FormControl>
-
-		</select>
-
-
-						<Select
-							value={currentTab[index].sliceCount}
-							onChange={(e) => this.handleSelectChange(e, currentTab, index)}
-							inputProps={{
-								name: 'sliceCount',
-								id: 'slice-count',
-							}}
-						>
-							<MenuItem value=""></MenuItem>
-							<MenuItem value={8}>8</MenuItem>
-							<MenuItem value={12}>12</MenuItem>
-							<MenuItem value={16}>16</MenuItem>
-						</Select>
-
-				</label>
-
-				<label htmlFor="sliceNum">
-					Szeletek száma
-					<select name="sliceNum" id="sliceNum">
-						<option value="8">8</option>
-						<option value="12">12</option>
-						<option value="16">16</option>
-					</select>
-				</label>
-
-				<label htmlFor="customReq">
-					Egyedi kérés
-					<select name="customReq" id="customReq">
-						<option value="8">8</option>
-						<option value="12">12</option>
-					</select>
-				</label>
-
-				<label htmlFor="comment">
-					<p className="summary-label">Az Ön kérése</p>
-					<textarea name="comment" placeholder='Ide írja mit szeretne pontosan!'>
-
-					</textarea>
-				</label>*/}
 			</div>
 		));
+
+		const Error = ({ name }) => (
+			<Field
+				name={name}
+				subscription={{ touched: true, error: true }}
+				render={({ meta: { touched, error } }) =>
+					// touched && error ? <span className='error-text'>A mező kitöltése kötelező!</span> : null
+					touched && error ? <span className='error-text'>{error}</span> : null
+				}
+			/>
+		);
+
+
 
 		return (
 			<div className='page order-cake'>
@@ -411,103 +409,73 @@ class OrderCake extends Component {
 					</div>
 
 					<div className="form-wrap">
-
-					{/*<Form
-						onSubmit={this.onSubmit}
-						render={({ handleSubmit, form, submitting, pristine, values, valid, input }) => (
-							<form onSubmit={handleSubmit}>
-
-								{ cakeForm }
-
-								<div className="summary">
-
-									<div className="delivery-type">
-										<p className="summary-label">Átvétel módja</p>
-
-										<div className="delivery-select">
-											<h3>Személyes átvétel üzletünkben</h3>
-											<h4>Átvehető: ~3 nap</h4>
-											<span className="delivery-price">Ingyenes</span>
-										</div>
-									</div>
-
-									<div className="cake-box">
-										<p className="summary-label">Tortadoboz</p>
-
-										<div className="cake-box-price-wrap">
-											<div className="shop-address">
-												<h3>Címünk:</h3>
-												<p>{currentTab.address}</p>
-											</div>
-
-											<FontAwesomeIcon icon={faBirthdayCake} />
-
-											<div className="cake-box-price">
-												<h3>500,-Ft / darab:</h3>
-												<p>{(currentTab.length * 500)},-Ft</p>
-											</div>
-										</div>
-									</div>
-
-									<div className="final-price-wrap">
-										<p className="summary-label">Végösszeg</p>
-										<span className="final-price">{finalPrice},-Ft</span>
-									</div>
-								</div>
-
-								<div className="buttons">
-									<button type='button' onClick={() => this.addCake(selectedShopName)}>+ 1 Torta</button>
-									<button type="submit" disabled={submitting || pristine}>
-										Submit
-									</button>
-								</div>
-								<pre>{JSON.stringify(values, 0, 2)}</pre>
-							</form>
-						)}
-						/>*/}
-
-
-
 						<Form
 							onSubmit={this.onSubmit}
+							validate={this.validate}
 							render={({ handleSubmit, reset, submitting, pristine, values }) => (
 								<form onSubmit={handleSubmit}>
 
 									<FormControl className='formControl'>
 										<label htmlFor='date'>Mikorra szeretné a tortát?</label>
-										<DatePicker
-											className="dateInput"
-											hintText="Válasszon dátumot"
-											formatDate={(date) => moment(date).format(dateFormat)}
-											DateTimeFormat={DateTimeFormat}
-											locale="hu"
-											okLabel="OK"
-											cancelLabel="Mégsem"
-											minDate={new Date(moment().add(1, 'day'))}
-											shouldDisableDate={(date) => this.disableWeekends(date)}
-											onChange={(semmi, date) => this.handleDateChange(date)}
-										/>
-										<span className='extra-info'>Kérjük vegye figyelembe, hogy a torta elkészítése kb. 3 napot<br/> vesz igénybe.</span>
+
+										<Field name="date">
+											{({ input, meta }) => (
+												<div style={{ position: 'relative'}}>
+													<KeyboardArrowDown className='customSelectIcon' style={{ top: '25px'}} />
+													<DatePicker
+														className={`dateInput ${meta.touched && meta.error ? 'err-required' : ''}`}
+														hintText="Válasszon dátumot"
+														formatDate={(date) => moment(date).format(dateFormat)}
+														DateTimeFormat={DateTimeFormat}
+														locale="hu"
+														okLabel="OK"
+														cancelLabel="Mégsem"
+														minDate={new Date(moment().add(3, 'day'))}
+														shouldDisableDate={(date) => this.disableWeekends(date)}
+														onChange={(semmi, date) => this.handleDateChange(date)}
+													/>
+													{ meta.touched && meta.error ? <Error name="date" /> : null }
+													<span className='extra-info'>Kérjük vegye figyelembe, hogy a torta elkészítése kb. 3 napot<br/> vesz igénybe.</span>
+												</div>
+											)}
+										</Field>
 									</FormControl>
 
 									<FormControl className='formControl'>
 										<label htmlFor='name'>Neve</label>
-										<Field
-											name='name'
-											component="input"
-											type="text"
-											placeholder=""
-										/>
+										<Field name="name">
+											{({ input, meta }) => (
+												<div>
+													<input {...input} className={meta.touched && meta.error ? 'err-required' : ''}/>
+													{ meta.touched && meta.error ? <Error name="name" /> : null }
+												</div>
+											)}
+										</Field>
+
 									</FormControl>
 
 									<FormControl className='formControl'>
 										<label htmlFor='phone'>Telefonszám</label>
-										<Field
-											name='phone'
-											component="input"
-											type="text"
-											placeholder=""
-										/>
+										<Field name="phone">
+											{({ input, meta }) => (
+												<div>
+													<input {...input} maxLength="11" className={meta.touched && meta.error ? 'err-required' : ''}/>
+													{ meta.touched && meta.error ? <Error name="phone" /> : null }
+												</div>
+											)}
+										</Field>
+									</FormControl>
+
+									<FormControl className='formControl'>
+										<label htmlFor='email'>E-mail cím</label>
+										<Field name="email">
+											{({ input, meta }) => (
+												<div>
+													<input {...input} className={meta.touched && meta.error ? 'err-required' : ''}/>
+													{ meta.touched && meta.error ? <Error name="email" /> : null }
+												</div>
+											)}
+										</Field>
 									</FormControl>
 
 									{ cakesForm }
@@ -555,7 +523,7 @@ class OrderCake extends Component {
 
 										<div className="final-price-wrap">
 											<p className="summary-label">Végösszeg</p>
-											<span className="final-price">{formData.finalPrice},-Ft</span>
+											<span className="final-price">{this.getFinalPrice()},-Ft</span>
 										</div>
 									</div>
 

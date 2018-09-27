@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Navigation from '../../components/Navigation';
 import Footer from '../../components/Footer';
 
-import cakeOfferData from './cakeOfferData.js';
+import cakeOfferData from '../../cakeData';
 
 import eggFree from '../../images/egg-free.png';
 import sugarFree from '../../images/sugar-free.png';
