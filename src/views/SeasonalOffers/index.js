@@ -10,9 +10,9 @@ import milkFree from '../../images/milk-free.png';
 import glutenFree from '../../images/gluten-free.png';
 import lactoseFree from '../../images/lactose-free.png';
 
-import './ConstantOffers.scss';
+import './SeasonalOffers.scss';
 
-class ConstantOffers extends Component {
+class SeasonalOffers extends Component {
 
 	componentDidMount() {
 		window.scroll(0,0);
@@ -47,9 +47,7 @@ class ConstantOffers extends Component {
 	getTags(cakeData) {
 		const tags = [];
 
-		if(cakeData.new) {
-			tags.push(<span className="tag" key={cakeData.id}>ÚJ</span>);
-		}
+		cakeData.tags.forEach((tag) => 	tags.push(<span className="tag" key={cakeData.id}>{tag}</span>));
 
 		return tags;
 	}
@@ -57,20 +55,29 @@ class ConstantOffers extends Component {
 	render() {
 
 		const cakes = cakeOfferData.map(cakeData => {
-			if(cakeData.seasonal === false) {
+			if(cakeData.seasonal) {
 				return (
 					<div className="cake" key={cakeData.id}>
-						<div className="tags">
+						<div className="tags-and-price">
 							{this.getTags(cakeData)}
+							<h3>{cakeData.price},-Ft</h3>
 						</div>
-						<div className="image-wrap">
-							<img src={cakeData.image} alt="torta"/>
-						</div>
-						<h2>{cakeData.name}</h2>
-						<h3>{cakeData.price},-Ft</h3>
-						<h3 className='calorie-count'>{cakeData.calories}</h3>
-						<div className="signs">
-							{this.getSigns(cakeData)}
+						<div className="cake-content-wrap">
+							<div className="image-wrap"
+								style={{
+									background: `url(${cakeData.image}) no-repeat center center`,
+									backgroundSize: 'cover',
+									overflow: 'hidden'
+								}}
+							>
+							</div>
+							<div className="cake-info">
+								<h2>{cakeData.name}</h2>
+								<h3 className='calorie-count'>{cakeData.calories}</h3>
+								<div className="signs">
+									{this.getSigns(cakeData)}
+								</div>
+							</div>
 						</div>
 					</div>
 				);
@@ -79,13 +86,17 @@ class ConstantOffers extends Component {
 		});
 
 		return (
-			<div className='page constant-offers'>
+			<div className='page seasonal-offers'>
 				<Navigation />
 				<div className="content">
 					<div className="content-header">
-						<h1>Állandó sütemények <span className="ghost-text">Állandó</span></h1>
+						<h1>Szezonális sütemények <span className="ghost-text">Szezonális</span></h1>
 
 						<p>A megjelölt árak szeletekre vonatkoznak!<br/>Az áraink nem tartalmazzák az extra díszt és a csomagolást.</p>
+					</div>
+
+					<div className="season-header">
+						<h2>Őszi-téli ajánlatunk <span>SZEPTEMBER-NOVEMBER</span></h2>
 					</div>
 
 					<div className="explanation">
@@ -147,4 +158,4 @@ class ConstantOffers extends Component {
 	}
 }
 
-export default ConstantOffers;
+export default SeasonalOffers;

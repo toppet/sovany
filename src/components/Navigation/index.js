@@ -11,12 +11,19 @@ class Navigation extends Component {
 		isOpen: false,
 	}
 
+	componentDidMount() {
+		const body = document.querySelector('body');
+
+		if(body.classList.contains('scrollBlocked')) {
+			body.classList.remove('scrollBlocked');
+		}
+	}
+
 	toggleMenu() {
-		console.log('toggleshit', document.querySelector('body'));
-		// ReactDOM.findDomNode(this.refs.mainWrap).classList.toggle('scrollBlocked');
 		document.querySelector('body').classList.toggle('scrollBlocked');
 		this.setState({ isOpen: !this.state.isOpen });
 	}
+
 
 	render() {
 		const { isOpen } = this.state;
@@ -24,7 +31,7 @@ class Navigation extends Component {
 			<div className={`nav-wrap ${isOpen ? 'open' : ''}`}>
 				<nav>
 					<NavLink exact to="/" activeClassName="selected">Bemutatkozás</NavLink>
-					<NavLink exact to="/allando-sutik" activeClassName="selected">Állandó sütik</NavLink>
+					<NavLink exact to="/allando-sutemenyeink" activeClassName="selected">Állandó sütik</NavLink>
 					<NavLink exact to="/szezonalis-kinalat" activeClassName="selected">Szezonális kínálatunk</NavLink>
 					<NavLink exact to="/gyakori-kerdesek" activeClassName="selected">Gyakori kérdések</NavLink>
 				</nav>

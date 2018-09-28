@@ -1,0 +1,145 @@
+@import '../../variables.scss';
+
+.faq {
+
+	.content {
+		padding: 0 3.5%;
+
+		@media screen and (min-width: 1280px) {
+			width: 100%;
+			margin: 0 auto;
+			padding: 0 3.5%;
+			max-width: 1440px;
+		}
+	}
+
+	.content-header {
+		margin-bottom: 25px;
+		position: relative;
+
+		h1 {
+			font-family: 'Playfair Display', serif;
+			font-size: 45px;
+			display: flex;
+			align-items: center;
+			justify-content: flex-end;
+
+			@media screen and (min-width: 1280px) {
+				font-size: 52px;
+				text-align: right;
+			}
+
+			&:before {
+				display: none;
+
+				@media screen and (min-width: 1280px) {
+					content: "";
+					position: absolute;
+					display: block;
+					height: 2px;
+					background: $color-pink;
+					width: 60%;
+					max-width: 700px;
+					left: 0;
+					top: 35px;
+				}
+			}
+		}
+
+		.ghost-text {
+			display: none;
+
+			@media screen and (min-width: 1280px) {
+				font-family: 'Playfair Display', serif;
+				font-size: 102px;
+				font-weight: bold;
+				color: rgba(242, 212, 203, 0.2);
+				display: inline;
+				position: absolute;
+				top: -55px;
+				right: 0
+			}
+		}
+
+		p {
+			font-size: 16px;
+			line-height: 1.88;
+		}
+	}
+
+	.faqs-wrap {
+		margin-bottom: 40px;
+
+		@media screen and (min-width: 1280px) {
+			margin-bottom: 85px;
+		}
+
+		.faq {
+			border-bottom: solid 1px #f2d4cb;
+			padding-bottom: 15px;
+
+			@media screen and (min-width: 1280px) {
+				&:last-child {
+					border: none;
+				}
+			}
+
+			.q-header {
+				font-family: 'Playfair Display', serif;
+				font-size: 20px;
+				font-weight: bold;
+				color: $color-blue;
+				padding: 10px 0;
+
+				@media screen and (min-width: 1280px) {
+
+				}
+			}
+
+			.q-answer {
+				font-family: 'Roboto', sans-serif;
+				font-size: 13px;
+				font-weight: 500;
+				color: #666;
+				line-height: 1.88;
+
+
+			}
+		}
+	}
+
+	.document-buttons {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		margin-bottom: 70px;
+
+		@media screen and (min-width: 1280px) {
+			margin-bottom: 85px;
+			flex-direction: row;
+			justify-content: space-between;
+		}
+
+		.download-btn {
+			display: inline-block;
+			text-align: center;
+			border-radius: 6px;
+			background-color: #f9b5b3;
+			box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05);
+			color: white;
+			font-family: 'Roboto', sans-serif;
+			font-size: 20px;
+			font-weight: 500;
+			padding: 20px 0;
+			width: 100%;
+			margin-bottom: 15px;
+
+			@media screen and (min-width: 1280px) {
+				width: 30%;
+			}
+		}
+	}
+
+
+}

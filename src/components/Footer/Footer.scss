@@ -3,13 +3,27 @@
 .footer-wrap {
 	display: flex;
 	flex-direction: column;
+	position: relative;
+
+	&:before {
+		content: '';
+		display: block;
+		width: 100%;
+		height: 1px;
+		background: #f2d4cb;
+		position: absolute;
+		left: 0;
+		top: 0;
+	}
 
 	@media screen and (min-width: 1280px) {
-
 		flex-direction: column;
-		padding: 0 5%;
+		/*padding: 0 5%;*/
 		max-height: 330px;
+		max-width: 1440px;
+		margin: 0 auto;
 		margin-top: auto;
+		width: 90%;
 	}
 }
 

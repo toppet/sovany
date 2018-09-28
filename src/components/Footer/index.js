@@ -6,7 +6,6 @@ import fb from '../../images/facebook-font-awesome@3x.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInstagram, faFacebookF } from '@fortawesome/free-brands-svg-icons';
 
-
 class Footer extends Component {
 
 	render() {
@@ -19,12 +18,12 @@ class Footer extends Component {
 					<div className="sitemap">
 						<h3>Oldaltérkép</h3>
 						<div className="links">
-							<a href="">Bemutatkozás</a>
-							<a href="">Állandó sütemények</a>
-							<a href="">Rendelés</a>
-							<a href="">Szezonális kínálatunk</a>
-							<a href="">Gyakori kérdések</a>
-							<a href="">Kalóriaértékek</a>
+							<NavLink exact to="/" activeClassName="selected">Bemutatkozás</NavLink>
+							<NavLink exact to="/allando-sutemenyeink" activeClassName="selected">Állandó sütemények</NavLink>
+							<NavLink exact to="/szezonalis-kinalat" activeClassName="selected">Szezonális kínálatunk</NavLink>
+							<NavLink exact to="/tortarendeles" className="order-cake-btn">Tortarendelés</NavLink>
+							<NavLink exact to="/gyakori-kerdesek" className="order-cake-btn">Gyakori kérdések</NavLink>
+							{/*<a href="">Kalóriaértékek</a>*/}
 						</div>
 					</div>
 

@@ -2,12 +2,20 @@ import React, { Component } from 'react';
 import Slider from "react-slick";
 import Navigation from '../../components/Navigation';
 import Footer from '../../components/Footer';
+import { NavLink } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRight, faBirthdayCake, faMobileAlt, faClock } from '@fortawesome/free-solid-svg-icons';
 
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+
 import logoLg from '../../images/sovany-vigasz-logo@3x.png';
 import owner from '../../images/sovany-vigasz-copy@3x.png';
+
+import img1 from '../../images/allando.png';
+import img2 from '../../images/alkalmakra.png';
+import img3 from '../../images/szezonalis.png';
 
 import budapest from '../../images/sovany-vigasz.png';
 import pilis from '../../images/sovany-vigasz.png';
@@ -18,6 +26,32 @@ import shopData from './shopData.js';
 
 import './Home.scss';
 
+const PrevArrow = (props) => {
+  const { className, style, onClick } = props;
+  return (
+    <div
+      className={className}
+      style={{ ...style, display: 'flex' }}
+      onClick={onClick}
+    >
+			<KeyboardArrowLeft className='custom-arrow arrow-left'/>
+		</div>
+  );
+}
+
+const NextArrow = (props) => {
+  const { className, style, onClick } = props;
+  return (
+    <div
+      className={className}
+      style={{ ...style, display: 'flex' }}
+      onClick={onClick}
+    >
+			<KeyboardArrowRight className='custom-arrow arrow-right'/>
+		</div>
+  );
+}
+
 const settings = {
 	dots: false,
 	infinite: true,
@@ -26,7 +60,7 @@ const settings = {
 	arrows: false,
 	//centerPadding: '100px',
 	slidesToShow: 5,
-	slidesToScroll: 5,
+	slidesToScroll: 1,
 	responsive: [
 		{
 			breakpoint: 1024,
@@ -122,12 +156,18 @@ class Home extends Component {
 		this.state = {
 			selectedShopIndex: 0,
 			selectedShop: {},
+			nav1: null,
+      nav2: null,
 		}
 	}
 
 	componentDidMount() {
 		window.scroll(0,0);
-		this.setState({selectedShop: shopData[0]});
+		this.setState({
+			selectedShop: shopData[0],
+			nav1: this.slider1,
+      nav2: this.slider2,
+		});
 	}
 
 	selectShop(shopIndex) {
@@ -137,11 +177,95 @@ class Home extends Component {
 		});
 	}
 
+
+
 	render() {
 
 		const { selectedShopIndex, selectedShop } = this.state;
 		const locationImages = [budapest, pilis, gyor, budaors];
 		let openingHours = null;
+
+		const mainTextSliderSettings = {
+			dots: false,
+			infinite: true,
+			arrows: false,
+			slidesToShow: 1,
+			slidesToScroll: 1,
+			fade: true,
+			cssEase: 'linear',
+			draggable: false,
+			swipe: false,
+		};
+
+		const mainImageSliderSettings = {
+			dots: false,
+			infinite: true,
+			arrows: true,
+			slidesToShow: 1,
+			slidesToScroll: 1,
+			adaptiveHeight: true,
+			prevArrow: <PrevArrow />,
+			nextArrow: <NextArrow />,
+		};
+
+		const mainTextSlider = (
+			<Slider
+				{...mainTextSliderSettings}
+				asNavFor={this.state.nav2}
+				ref={slider => (this.slider1 = slider)}
+			>
+
+				<div className="text-slide">
+					<h1>Legújabb ötletünk most limitált mennyiségben!</h1>
+					<p>There is a lot of exciting stuff going on in the stars above us that make astronomy so much fun. The truth is the universe is a constantly changing, moving.</p>
+					<div className="buttons">
+						<NavLink exact to="/szezonalis-ajanlataink">MEGNÉZEM</NavLink>
+						<NavLink exact to="/tortarendeles">TORTARENDELÉS</NavLink>
+					</div>
+				</div>
+
+				<div className="text-slide">
+					<h1>Legújabb ötletünk most limitált mennyiségben 2!</h1>
+					<p>There is a lot of exciting stuff going on in the stars above us that make astronomy so much fun. The truth is the universe is a constantly changing, moving.</p>
+					<div className="buttons">
+						<NavLink exact to="/szezonalis-ajanlataink">MEGNÉZEM</NavLink>
+						<NavLink exact to="/tortarendeles">TORTARENDELÉS</NavLink>
+					</div>
+				</div>
+
+				<div className="text-slide">
+					<h1>Legújabb ötletünk most limitált mennyiségben 3!</h1>
+					<p>There is a lot of exciting stuff going on in the stars above us that make astronomy so much fun. The truth is the universe is a constantly changing, moving.</p>
+					<div className="buttons">
+						<NavLink exact to="/szezonalis-ajanlataink">MEGNÉZEM</NavLink>
+						<NavLink exact to="/tortarendeles">TORTARENDELÉS</NavLink>
+					</div>
+				</div>
+
+			</Slider>
+		);
+
+		const mainImageSlider = (
+			<Slider
+				{...mainImageSliderSettings}
+				asNavFor={this.state.nav1}
+				ref={slider => (this.slider2 = slider)}
+			>
+
+				<div className="image-slide">
+					<img src={img1} alt="" style={{ width: '100%' }}/>
+				</div>
+
+				<div className="image-slide">
+					<img src={img2} alt="" style={{ width: '100%' }}/>
+				</div>
+
+				<div className="image-slide">
+					<img src={img3} alt="" style={{ width: '100%' }}/>
+				</div>
+
+			</Slider>
+		);
 
 		if(selectedShop.openingHours) {
 			openingHours = (
@@ -164,15 +288,14 @@ class Home extends Component {
 				<div className="content">
 					<div className="top-section">
 						<div className="top-section-1">
-							<h1>Legújabb ötletünk most limitált mennyiségben!</h1>
-							<p>There is a lot of exciting stuff going on in the stars above us that make astronomy so much fun. The truth is the universe is a constantly changing, moving.</p>
-							<div className="buttons">
-								<button type="button">MEGNÉZEM</button>
-								<button type="button">TORTARENDELÉS</button>
+							<div className="slider-wrap">
+								{ mainTextSlider }
 							</div>
 						</div>
 						<div className="top-section-2">
-							<div className="slider-wrap"></div>
+							<div className="slider-wrap">
+								{ mainImageSlider }
+							</div>
 						</div>
 					</div>
 
@@ -198,7 +321,8 @@ There is a lot of exciting stuff going on in the stars above us that make astron
 					<div className="slider-wrap">
 						{cakeSlider}
 					</div>
-					<button type="button" className="all-product">ÖSSZES TERMÉKÜNK</button>
+
+					<NavLink exact to="/allando-sutemenyeink" className="all-product">ÖSSZES TERMÉKÜNK</NavLink>
 				</div>
 
 				<div className="shops">
@@ -256,15 +380,19 @@ There is a lot of exciting stuff going on in the stars above us that make astron
 				</div>
 
 				<div className="blocks">
-					<div className="constant">
+
+					<NavLink exact to="/allando-sutemenyeink" className="constant">
 						<h3>Állandó<br/>süteményeink</h3>
-					</div>
-					<div className="seasonal">
+					</NavLink>
+
+					<NavLink exact to="/szezonalis-kinalat" className="seasonal">
 						<h3>Szezonális<br/>ajánlataink</h3>
-					</div>
-					<div className="ordering">
+						</NavLink>
+
+					<NavLink exact to="/tortarendeles" className="ordering">
 						<h3>Tortarendelés<br/>alkalmakra</h3>
-					</div>
+					</NavLink>
+
 				</div>
 
 				</div>

@@ -63,6 +63,10 @@ class OrderCake extends Component {
 		},
 	}
 
+	componentDidMount() {
+		window.scroll(0,0);
+	}
+
 	selectShop(index, shopLocation) {
 		const new_formData = this.state.formData;
 		new_formData.location = addresses[shopLocation];
@@ -289,29 +293,29 @@ class OrderCake extends Component {
 		const cakesForm = formData.cakes.map((item, index) => (
 			<div key={index} className='cake'>
 
-				<FormControl className={`formControl ${index > 0 ? 'additional' : ''}`}>
+				<FormControl className={`formControl cake-type-select-wrap ${index > 0 ? 'additional' : ''}`}>
 					{index > 0 ? this.renderRemoveBtn(index) : null}
 
 					<div className="label-wrap">
 						<label htmlFor="cakeType">Melyik tortát szeretné rendelni?</label>
-						<Select
-							value={formData.cakes[index].cakeType || ""}
-							onChange={(e) => this.handleCakeTypeChange(e, index)}
-							inputProps={{
-								name: 'cakeType',
-								id: 'cake-type',
-							}}
-							IconComponent={() => CustomIconComponent}
-							className='cake-select'
-							disableUnderline={true}
-						>
-							{	cakeDataJSON.map(cake => <MenuItem key={cake.id} value={cake.id}>{cake.name}</MenuItem>) }
-						</Select>
+						<Field name="cakeType">
+							{({ input, meta }) => (
+								<Select
+									value={formData.cakes[index].cakeType || ""}
+									onChange={(e) => this.handleCakeTypeChange(e, index)}
+									IconComponent={() => CustomIconComponent}
+									className='cake-select'
+									disableUnderline={true}
+								>
+									{	cakeDataJSON.map(cake => <MenuItem key={cake.id} value={cake.id}>{cake.name}</MenuItem>) }
+								</Select>
+							)}
+						</Field>
 					</div>
 				</FormControl>
 
 				<div className="col-divided" style={{display: formData.cakes[index].cakeType ? 'flex' : 'none'}}>
-					<FormControl className='formControl'>
+					<FormControl className='formControl formControl-slice-count'>
 						<label htmlFor="sliceCount">Szeletek száma</label>
 
 						<Field name="sliceCount">
@@ -338,7 +342,7 @@ class OrderCake extends Component {
 						</Field>
 					</FormControl>
 
-					<FormControl className='formControl'>
+					<FormControl className='formControl formControl-custom-request'>
 						<label htmlFor="customRequest">Különleges díszítés</label>
 						<Select
 							value={formData.cakes[index].decoration}
@@ -414,69 +418,70 @@ class OrderCake extends Component {
 							validate={this.validate}
 							render={({ handleSubmit, reset, submitting, pristine, values }) => (
 								<form onSubmit={handleSubmit}>
+									<div className="form-row">
+										<FormControl className='formControl formControl-date'>
+											<label htmlFor='date'>Mikorra szeretné a tortát?</label>
 
-									<FormControl className='formControl'>
-										<label htmlFor='date'>Mikorra szeretné a tortát?</label>
+											<Field name="date">
+												{({ input, meta }) => (
+													<div style={{ position: 'relative'}}>
+														<KeyboardArrowDown className='customSelectIcon' style={{ top: '25px'}} />
+														<DatePicker
+															className={`dateInput ${meta.touched && meta.error ? 'err-required' : ''}`}
+															hintText="Válasszon dátumot"
+															formatDate={(date) => moment(date).format(dateFormat)}
+															DateTimeFormat={DateTimeFormat}
+															locale="hu"
+															okLabel="OK"
+															cancelLabel="Mégsem"
+															minDate={new Date(moment().add(3, 'day'))}
+															shouldDisableDate={(date) => this.disableWeekends(date)}
+															onChange={(semmi, date) => this.handleDateChange(date)}
+														/>
+														{ meta.touched && meta.error ? <Error name="date" /> : null }
+														<span className='extra-info'>Ha 3 napon belül szeretné leadni a rendelését, kérjük hívja fel <br /> üzletünket az e-mailben kapott telefonszámon! Köszönjük!</span>
+													</div>
+												)}
+											</Field>
+										</FormControl>
 
-										<Field name="date">
-											{({ input, meta }) => (
-												<div style={{ position: 'relative'}}>
-													<KeyboardArrowDown className='customSelectIcon' style={{ top: '25px'}} />
-													<DatePicker
-														className={`dateInput ${meta.touched && meta.error ? 'err-required' : ''}`}
-														hintText="Válasszon dátumot"
-														formatDate={(date) => moment(date).format(dateFormat)}
-														DateTimeFormat={DateTimeFormat}
-														locale="hu"
-														okLabel="OK"
-														cancelLabel="Mégsem"
-														minDate={new Date(moment().add(3, 'day'))}
-														shouldDisableDate={(date) => this.disableWeekends(date)}
-														onChange={(semmi, date) => this.handleDateChange(date)}
-													/>
-													{ meta.touched && meta.error ? <Error name="date" /> : null }
-													<span className='extra-info'>Kérjük vegye figyelembe, hogy a torta elkészítése kb. 3 napot<br/> vesz igénybe.</span>
-												</div>
-											)}
-										</Field>
-									</FormControl>
+										<FormControl className='formControl formControl-name'>
+											<label htmlFor='name'>Neve</label>
+											<Field name="name">
+												{({ input, meta }) => (
+													<div>
+														<input {...input} className={meta.touched && meta.error ? 'err-required' : ''}/>
+														{ meta.touched && meta.error ? <Error name="name" /> : null }
+													</div>
+												)}
+											</Field>
 
-									<FormControl className='formControl'>
-										<label htmlFor='name'>Neve</label>
-										<Field name="name">
-											{({ input, meta }) => (
-												<div>
-													<input {...input} className={meta.touched && meta.error ? 'err-required' : ''}/>
-													{ meta.touched && meta.error ? <Error name="name" /> : null }
-												</div>
-											)}
-										</Field>
+										</FormControl>
 
-									</FormControl>
+										<FormControl className='formControl formControl-phone'>
+											<label htmlFor='phone'>Telefonszám</label>
+											<Field name="phone">
+												{({ input, meta }) => (
+													<div>
+														<input {...input} maxLength="11" className={meta.touched && meta.error ? 'err-required' : ''}/>
+														{ meta.touched && meta.error ? <Error name="phone" /> : null }
+													</div>
+												)}
+											</Field>
+										</FormControl>
 
-									<FormControl className='formControl'>
-										<label htmlFor='phone'>Telefonszám</label>
-										<Field name="phone">
-											{({ input, meta }) => (
-												<div>
-													<input {...input} maxLength="11" className={meta.touched && meta.error ? 'err-required' : ''}/>
-													{ meta.touched && meta.error ? <Error name="phone" /> : null }
-												</div>
-											)}
-										</Field>
-									</FormControl>
-
-									<FormControl className='formControl'>
-										<label htmlFor='email'>E-mail cím</label>
-										<Field name="email">
-											{({ input, meta }) => (
-												<div>
-													<input {...input} className={meta.touched && meta.error ? 'err-required' : ''}/>
-													{ meta.touched && meta.error ? <Error name="email" /> : null }
-												</div>
-											)}
-										</Field>
-									</FormControl>
+										<FormControl className='formControl formControl-email'>
+											<label htmlFor='email'>E-mail cím</label>
+											<Field name="email">
+												{({ input, meta }) => (
+													<div>
+														<input {...input} className={meta.touched && meta.error ? 'err-required' : ''}/>
+														{ meta.touched && meta.error ? <Error name="email" /> : null }
+													</div>
+												)}
+											</Field>
+										</FormControl>
+									</div>
 
 									{ cakesForm }
 
@@ -532,7 +537,7 @@ class OrderCake extends Component {
 										<button type="submit" disabled={submitting || pristine}>RENDELÉS ELKÜLDÉSE</button>
 									</div>
 
-									<pre>{JSON.stringify(values, 0, 2)}</pre>
+									<pre>{/*JSON.stringify(values, 0, 2)*/}</pre>
 								</form>
 							)}
 						/>

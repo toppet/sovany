@@ -1,6 +1,6 @@
 @import '../../variables.scss';
 
-.constant-offers {
+.seasonal-offers {
 
 	.content {
 		padding: 0 3.5%;
@@ -39,7 +39,7 @@
 					height: 2px;
 					background: $color-pink;
 					width: 60%;
-					max-width: 750px;
+					max-width: 700px;
 					left: 0;
 					top: 35px;
 				}
@@ -64,6 +64,52 @@
 		p {
 			font-size: 16px;
 			line-height: 1.88;
+		}
+	}
+
+	.season-header {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		height: 260px;
+		justify-content: center;
+		border-radius: 6px;
+		background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2));
+		margin-bottom: 45px;
+
+		@media screen and (min-width: 1280px) {
+			height: 420px;
+			margin-bottom: 60px;
+		}
+
+		h2 {
+			color: white;
+			position: relative;
+			font-family: 'Playfair Display', serif;
+			font-size: 42px;
+			line-height: 1.43;
+			font-weight: bold;
+			text-align: center;
+			margin-top: 45px;
+
+			@media screen and (min-width: 1280px) {
+				font-size: 64px;
+			}
+		}
+
+		h2 span {
+			color: white;
+			position: absolute;
+			font-family: 'Roboto', sans-serif;
+			font-size: 14px;
+			font-weight: 900;
+			letter-spacing: 2px;
+			top: -35px;
+			left: 50%;
+			transform: translateX(-50%);
+			display: block;
+			width: 100%;
+			text-align: center;
 		}
 	}
 
@@ -159,21 +205,22 @@
 			position: relative;
 			display: inline-block;
 			overflow: hidden;
-			border: 1px solid $color-pink;
+			border: 1px solid transparent;
 			border-radius: 6px;
 			box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05);
 			padding-bottom: 20px;
-			width: 255px;
+			width: 345px;
 			margin: 0 auto;
 			margin-bottom: 30px;
 
 			@media screen and (min-width: 768px) {
 				width: 45%;
+				max-width: 550px;
 				justify-content: space-evenly;
 			}
 
 			@media screen and (min-width: 1280px) {
-				width: 22%;
+				width: 50%;
 				//margin: 0 20px;
 			}
 
@@ -182,11 +229,28 @@
 			}
 		}
 
-		.cake .tags {
-			position: absolute;
+		.cake-content-wrap {
+			@media screen and (min-width: 1280px) {
+				display: flex;
+				flex-direction: row;
+				//margin: 0 20px;
+				width: 90%;
+				margin: 0 auto;
+			}
+		}
+
+		.cake .tags-and-price {
+		 /*position: absolute;
 			top: 15px;
 			right: 15px;
-			z-index: 0;
+			z-index: 0; */
+			width: 90%;
+			margin: 0 auto;
+			margin-top: 20px;
+			margin-bottom: 10px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
 
 			.tag {
 				background: $color-pink;
@@ -194,49 +258,57 @@
 				display: inline-block;
 				padding: 10px 20px;
 				border-radius: 6px;
+				width: 140px;
+				text-align: center;
+				font-family: 'Roboto', sans-serif;
 				font-size: 10px;
-
+				font-weight: 900;
+				letter-spacing: 1.3px;
 			}
 		}
 
 		.cake .image-wrap {
-			height: 200px;
+			height: 245px;
 			overflow: hidden;
 			position: relative;
-			flex: 1;
-			width: 100%;
+			width: 90%;
 			z-index: -1;
-		}
-
-		.cake .image-wrap img {
-			width: 100%;
-			// position: absolute;
-			margin-top: -25%;
-
-			@media screen and (min-width: 768px) {
-				margin-top: -42.5%;
-			}
+			margin: 0 auto;
+			margin-bottom: 25px;
 
 			@media screen and (min-width: 1280px) {
-				margin-top: -25%;
+				max-width: 250px;
+				height: 250px;
+				margin: 0;
 			}
+		}
 
-			@media screen and (min-width: 2560px) {
-				margin-top: -50%;
+		.cake .cake-info {
+			@media screen and (min-width: 1280px) {
+				flex: 1;
 			}
+		}
+
+		.cake h2,
+		.cake .calorie-count,
+		.cake .signs {
+			width: 90%;
+			margin: 0 auto;
 		}
 
 		.cake h2 {
 			font-family: 'Playfair Display', serif;
 			font-size: 20px;
-			text-align: center;
+			text-align: left;
+			margin-bottom: 5px;
 		}
 
 		.cake h3 {
 			padding: 0;
 			margin: 0;
-			margin-bottom: 15px;
-			text-align: center;
+			//margin-bottom: 15px;
+			font-weight: 900;
+			text-align: left;
 			font-size: 14px;
 			color: #666;
 		}
@@ -249,12 +321,15 @@
 		}
 
 		.cake .signs {
-			text-align: center;
+			text-align: left;
+			margin-top: 15px;
 		}
 
 		.cake .signs img {
-			margin: 0 10px;
+			margin: 0;
+			margin-right: 10px;
 			width: 35px;
 		}
+
 	}
 }
