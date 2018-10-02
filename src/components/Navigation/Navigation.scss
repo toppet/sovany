@@ -8,7 +8,7 @@
 		flex: 1;
 		align-items: center;
 		justify-content: space-between;
-		padding: 0 5%;
+		padding: 30px 5% 0;
 		max-height: 115px;
 		/*max-width: 1440px;
 		margin: 0 auto;*/
@@ -135,28 +135,45 @@
 		&.selected {
 			color: $color-blue;
 			font-weight: bold;
+			cursor: initial;
+		}
+
+		&.selected:after {
+			content: "";
+			width: 35px;
+			height: 3px;
+			background: $color-mildpink;
+			position: absolute;
+			display: block;
+			bottom: -5px;
+			left: 0;
 		}
 
 		&:after {
 			content: "";
 			width: 0;
-			height: 2px;
+			height: 3px;
 			background: $color-mildpink;
 			position: absolute;
 			display: block;
 			bottom: -5px;
 			left: 0;
 			transition: width 250ms ease-in-out;
+
 		}
 	}
 
 	nav a:hover:after {
-	/*	content: "";
+		/*	content: "";
 		display: block;
 		position: absolute;
 		height: 2px;
 		background: red;*/
 		width: 100%;
+	}
+	nav a.selected:hover:after {
+		width: 35px;
+
 	}
 }
 

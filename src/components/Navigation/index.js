@@ -38,10 +38,10 @@ class Navigation extends Component {
 				<div className="additional">
 					<NavLink exact to="/tortarendeles" className="order-cake-btn">TORTARENDELÉS</NavLink>
 					<div className="social">
-						<a href="">
+						<a href="https://www.facebook.com/sovanyvigasz/" target='_blank' rel="noopener noreferrer">
 							<FontAwesomeIcon icon={faFacebookF} />
 						</a>
-						<a href="">
+						<a href="https://www.instagram.com/sovanyvigasz/" target='_blank' rel="noopener noreferrer">
 							<FontAwesomeIcon icon={faInstagram} />
 						</a>
 					</div>

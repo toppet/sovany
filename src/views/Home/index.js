@@ -77,9 +77,49 @@ const settings = {
 			settings: {
 				arrows: false,
 				centerMode: true,
-				centerPadding: '40px',
+				centerPadding: '80px',
 				slidesToShow: 3,
 				slidesToScroll: 3,
+			}
+		},
+		{
+			breakpoint: 760,
+			settings: {
+				arrows: false,
+				centerMode: true,
+				centerPadding: '80px',
+				slidesToShow: 2,
+				slidesToScroll: 2,
+			}
+		},
+		{
+			breakpoint: 600,
+			settings: {
+				arrows: false,
+				centerMode: true,
+				centerPadding: '125px',
+				slidesToShow: 1,
+				slidesToScroll: 1,
+			}
+		},
+		{
+			breakpoint: 500,
+			settings: {
+				arrows: false,
+				centerMode: true,
+				centerPadding: '75px',
+				slidesToShow: 1,
+				slidesToScroll: 1,
+			}
+		},
+		{
+			breakpoint: 425,
+			settings: {
+				arrows: false,
+				centerMode: true,
+				centerPadding: '75px',
+				slidesToShow: 1,
+				slidesToScroll: 1,
 			}
 		},
 		{
@@ -88,6 +128,16 @@ const settings = {
 				arrows: false,
 				centerMode: true,
 				centerPadding: '40px',
+				slidesToShow: 1,
+				slidesToScroll: 1,
+			}
+		},
+		{
+			breakpoint: 320,
+			settings: {
+				arrows: false,
+				centerMode: true,
+				centerPadding: '25px',
 				slidesToShow: 1,
 				slidesToScroll: 1,
 			}
@@ -219,7 +269,7 @@ class Home extends Component {
 					<h1>Legújabb ötletünk most limitált mennyiségben!</h1>
 					<p>There is a lot of exciting stuff going on in the stars above us that make astronomy so much fun. The truth is the universe is a constantly changing, moving.</p>
 					<div className="buttons">
-						<NavLink exact to="/szezonalis-ajanlataink">MEGNÉZEM</NavLink>
+						<NavLink exact to="/szezonalis-kinalat">MEGNÉZEM</NavLink>
 						<NavLink exact to="/tortarendeles">TORTARENDELÉS</NavLink>
 					</div>
 				</div>
@@ -228,7 +278,7 @@ class Home extends Component {
 					<h1>Legújabb ötletünk most limitált mennyiségben 2!</h1>
 					<p>There is a lot of exciting stuff going on in the stars above us that make astronomy so much fun. The truth is the universe is a constantly changing, moving.</p>
 					<div className="buttons">
-						<NavLink exact to="/szezonalis-ajanlataink">MEGNÉZEM</NavLink>
+						<NavLink exact to="/szezonalis-kinalat">MEGNÉZEM</NavLink>
 						<NavLink exact to="/tortarendeles">TORTARENDELÉS</NavLink>
 					</div>
 				</div>
@@ -237,7 +287,7 @@ class Home extends Component {
 					<h1>Legújabb ötletünk most limitált mennyiségben 3!</h1>
 					<p>There is a lot of exciting stuff going on in the stars above us that make astronomy so much fun. The truth is the universe is a constantly changing, moving.</p>
 					<div className="buttons">
-						<NavLink exact to="/szezonalis-ajanlataink">MEGNÉZEM</NavLink>
+						<NavLink exact to="/szezonalis-kinalat">MEGNÉZEM</NavLink>
 						<NavLink exact to="/tortarendeles">TORTARENDELÉS</NavLink>
 					</div>
 				</div>
