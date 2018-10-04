@@ -74,8 +74,27 @@
 		height: 260px;
 		justify-content: center;
 		border-radius: 6px;
-		background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2));
 		margin-bottom: 45px;
+		background: url('../../images/szezon_hero@2x.png') no-repeat center center;
+		// background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2));
+		background-size: 225%;
+		background-origin: center center;
+		position: relative;
+
+		&:before {
+			content: '';
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			background-image: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2));
+			opacity: .6;
+		}
+
+		@media screen and (min-width: 768px) {
+			background-size: cover;
+		}
 
 		@media screen and (min-width: 1280px) {
 			height: 420px;

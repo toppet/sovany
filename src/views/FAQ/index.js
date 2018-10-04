@@ -45,6 +45,16 @@ class FAQ extends Component {
 
 						<div className="faq">
 							<div className="q-header">
+								<h3>A tejfehérje mentes süteményeinkben milyen növényi tejet használunk?</h3>
+							</div>
+
+							<div className="q-answer">
+								<p>Mandulatejet használunk.<br/>De a tejfehérje mentes nyomokban tartalmazhat tejfehérjét.</p>
+							</div>
+						</div>
+
+						<div className="faq">
+							<div className="q-header">
 								<h3>Keresztszennyeződés veszélye fenn áll-e?</h3>
 							</div>
 
